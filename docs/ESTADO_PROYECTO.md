@@ -280,3 +280,20 @@ para la dirección:
 192.168.100.12
 
 Esta advertencia queda pendiente de configuración.
+
+FASE 06 — Autenticación Web       ✅ COMPLETADA
+
+[x] Login
+[x] Sesión Supabase
+[x] Validación platform_admin
+[x] Protección /superadmin
+[x] Dashboard Superadmin
+[x] Consulta buildings con RLS
+
+FASE 07 — Gestión de edificios    ← SIGUIENTE
+
+[ ] Listado edificios
+[ ] Crear edificio
+[ ] Editar edificio
+[ ] Desactivar edificio
+[ ] Ver detalle edificio
