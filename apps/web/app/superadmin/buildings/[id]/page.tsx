@@ -113,6 +113,26 @@ export default async function BuildingDetailPage({
 
           <p>
             <strong>Estado:</strong>{' '}
+            <div
+  style={{
+    marginTop: 24,
+  }}
+>
+  <Link
+    href={`/superadmin/buildings/${building.id}/edit`}
+    style={{
+      display: 'inline-block',
+      padding: '12px 18px',
+      backgroundColor: '#111827',
+      color: '#ffffff',
+      borderRadius: 10,
+      textDecoration: 'none',
+      fontWeight: 600,
+    }}
+  >
+    Editar edificio
+  </Link>
+</div>
             <span
               style={{
                 color: building.active
