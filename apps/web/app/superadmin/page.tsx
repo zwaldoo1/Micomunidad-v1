@@ -1,6 +1,7 @@
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
-import { createClient } from '../../utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
 
 export default async function SuperadminPage() {
   const supabase = await createClient()
@@ -50,10 +51,33 @@ export default async function SuperadminPage() {
 
         <hr style={{ margin: '30px 0' }} />
 
-        <h2>Edificios</h2>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 20,
+          }}
+        >
+          <h2>Edificios</h2>
+
+          <Link
+            href="/superadmin/buildings/new"
+            style={{
+              padding: '12px 18px',
+              backgroundColor: '#111827',
+              color: '#ffffff',
+              borderRadius: 10,
+              textDecoration: 'none',
+              fontWeight: 600,
+            }}
+          >
+            + Crear edificio
+          </Link>
+        </div>
 
         {error && (
-          <p>
+          <p style={{ color: '#b91c1c' }}>
             Error cargando edificios: {error.message}
           </p>
         )}
@@ -70,26 +94,76 @@ export default async function SuperadminPage() {
             <h3>No existen edificios todavía</h3>
 
             <p>
-              Tu plataforma está preparada para crear
-              el primer edificio.
+              Tu plataforma está preparada para crear el primer edificio.
             </p>
           </div>
         )}
 
         {buildings?.map((building) => (
-          <div
+          <Link
             key={building.id}
+            href={`/superadmin/buildings/${building.id}`}
             style={{
+              display: 'block',
               marginTop: 15,
               backgroundColor: '#ffffff',
-              padding: 20,
-              borderRadius: 12,
+              padding: 22,
+              borderRadius: 14,
+              color: '#111827',
+              textDecoration: 'none',
+              cursor: 'pointer',
+              border: '1px solid #e5e7eb',
             }}
           >
-            <strong>{building.name}</strong>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 20,
+              }}
+            >
+              <div>
+                <strong
+                  style={{
+                    fontSize: 18,
+                    display: 'block',
+                  }}
+                >
+                  {building.name}
+                </strong>
 
-            <p>{building.address ?? 'Sin dirección'}</p>
-          </div>
+                <p
+                  style={{
+                    marginTop: 6,
+                    marginBottom: 6,
+                  }}
+                >
+                  {building.address ?? 'Sin dirección'}
+                </p>
+
+                <span
+                  style={{
+                    fontSize: 14,
+                    color: building.active
+                      ? '#047857'
+                      : '#b91c1c',
+                  }}
+                >
+                  {building.active ? 'Activo' : 'Inactivo'}
+                </span>
+              </div>
+
+              <span
+                style={{
+                  fontSize: 24,
+                  color: '#6b7280',
+                }}
+              >
+                →
+              </span>
+            </div>
+          </Link>
         ))}
       </div>
     </main>

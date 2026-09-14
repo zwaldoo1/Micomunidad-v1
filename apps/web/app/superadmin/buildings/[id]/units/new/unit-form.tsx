@@ -4,7 +4,7 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
-import { createClient } from '../../../../../../utils/supabase/client'
+import { createClient } from '@/utils/supabase/client'
 
 type Props = {
   buildingId: string

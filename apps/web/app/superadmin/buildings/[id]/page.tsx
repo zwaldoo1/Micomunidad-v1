@@ -1,14 +1,17 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
-import { createClient } from '../../../../utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
+
 type Props = {
   params: Promise<{
     id: string
   }>
 }
 
-export default async function BuildingDetailPage({ params }: Props) {
+export default async function BuildingDetailPage({
+  params,
+}: Props) {
   const { id } = await params
 
   const supabase = await createClient()
@@ -48,8 +51,10 @@ export default async function BuildingDetailPage({ params }: Props) {
     error: unitsError,
   } = await supabase
     .from('units')
-    .select('id, unit_number, floor, proration, active, created_at')
-    .eq('building_id', id)
+    .select(
+      'id, unit_number, floor, proration, active, created_at'
+    )
+    .eq('building_id', building.id)
     .order('unit_number', { ascending: true })
 
   return (
@@ -70,6 +75,8 @@ export default async function BuildingDetailPage({ params }: Props) {
         <Link
           href="/superadmin"
           style={{
+            display: 'inline-block',
+            marginBottom: 24,
             color: '#4b5563',
             textDecoration: 'none',
           }}
@@ -79,13 +86,20 @@ export default async function BuildingDetailPage({ params }: Props) {
 
         <div
           style={{
-            marginTop: 24,
             backgroundColor: '#ffffff',
             padding: 30,
             borderRadius: 16,
+            border: '1px solid #e5e7eb',
           }}
         >
-          <h1>{building.name}</h1>
+          <h1
+            style={{
+              marginTop: 0,
+              marginBottom: 20,
+            }}
+          >
+            {building.name}
+          </h1>
 
           <p>
             <strong>Dirección:</strong>{' '}
@@ -99,16 +113,25 @@ export default async function BuildingDetailPage({ params }: Props) {
 
           <p>
             <strong>Estado:</strong>{' '}
-            {building.active ? 'Activo' : 'Inactivo'}
+            <span
+              style={{
+                color: building.active
+                  ? '#047857'
+                  : '#b91c1c',
+              }}
+            >
+              {building.active ? 'Activo' : 'Inactivo'}
+            </span>
           </p>
         </div>
 
         <div
           style={{
-            marginTop: 30,
+            marginTop: 32,
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            gap: 20,
           }}
         >
           <h2>Departamentos / Unidades</h2>
@@ -116,9 +139,9 @@ export default async function BuildingDetailPage({ params }: Props) {
           <Link
             href={`/superadmin/buildings/${building.id}/units/new`}
             style={{
+              padding: '12px 18px',
               backgroundColor: '#111827',
               color: '#ffffff',
-              padding: '12px 18px',
               borderRadius: 10,
               textDecoration: 'none',
               fontWeight: 600,
@@ -129,21 +152,39 @@ export default async function BuildingDetailPage({ params }: Props) {
         </div>
 
         {unitsError && (
-          <p style={{ color: '#b91c1c' }}>
+          <div
+            style={{
+              marginTop: 20,
+              padding: 20,
+              backgroundColor: '#fee2e2',
+              color: '#991b1b',
+              borderRadius: 12,
+            }}
+          >
             Error cargando unidades: {unitsError.message}
-          </p>
+          </div>
         )}
 
         {!unitsError && units?.length === 0 && (
           <div
             style={{
               marginTop: 20,
-              backgroundColor: '#ffffff',
               padding: 28,
+              backgroundColor: '#ffffff',
               borderRadius: 14,
+              border: '1px solid #e5e7eb',
             }}
           >
-            No existen unidades todavía.
+            <strong>No existen unidades todavía.</strong>
+
+            <p
+              style={{
+                marginBottom: 0,
+                color: '#6b7280',
+              }}
+            >
+              Crea el primer departamento o unidad de este edificio.
+            </p>
           </div>
         )}
 
@@ -152,21 +193,37 @@ export default async function BuildingDetailPage({ params }: Props) {
             key={unit.id}
             style={{
               marginTop: 14,
-              backgroundColor: '#ffffff',
               padding: 20,
+              backgroundColor: '#ffffff',
               borderRadius: 12,
+              border: '1px solid #e5e7eb',
             }}
           >
-            <strong>Unidad {unit.unit_number}</strong>
+            <strong
+              style={{
+                fontSize: 18,
+              }}
+            >
+              Unidad {unit.unit_number}
+            </strong>
 
-            <p>Piso: {unit.floor ?? 'Sin información'}</p>
+            <p>
+              Piso: {unit.floor ?? 'Sin información'}
+            </p>
 
             <p>
               Prorrateo: {unit.proration ?? 'Sin definir'}
             </p>
 
-            <p>
-              Estado: {unit.active ? 'Activa' : 'Inactiva'}
+            <p
+              style={{
+                marginBottom: 0,
+                color: unit.active
+                  ? '#047857'
+                  : '#b91c1c',
+              }}
+            >
+              {unit.active ? 'Activa' : 'Inactiva'}
             </p>
           </div>
         ))}

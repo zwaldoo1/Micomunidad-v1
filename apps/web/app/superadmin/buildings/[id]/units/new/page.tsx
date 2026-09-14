@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
-import { createClient } from '../../../../../../utils/supabase/server'
+import { createClient } from '@/utils/supabase/server'
 import UnitForm from './unit-form'
 
 type Props = {
@@ -65,8 +65,8 @@ export default async function NewUnitPage({ params }: Props) {
           style={{
             display: 'inline-block',
             marginBottom: 24,
-            textDecoration: 'none',
             color: '#4b5563',
+            textDecoration: 'none',
           }}
         >
           ← Volver al edificio
