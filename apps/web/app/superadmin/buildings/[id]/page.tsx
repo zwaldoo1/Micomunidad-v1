@@ -38,7 +38,9 @@ export default async function BuildingDetailPage({
     error: buildingError,
   } = await supabase
     .from('buildings')
-    .select('id, name, address, rut, active, created_at')
+    .select(
+      'id, name, address, rut, active, created_at'
+    )
     .eq('id', id)
     .single()
 
@@ -55,7 +57,9 @@ export default async function BuildingDetailPage({
       'id, unit_number, floor, proration, active, created_at'
     )
     .eq('building_id', building.id)
-    .order('unit_number', { ascending: true })
+    .order('unit_number', {
+      ascending: true,
+    })
 
   return (
     <main
@@ -113,36 +117,59 @@ export default async function BuildingDetailPage({
 
           <p>
             <strong>Estado:</strong>{' '}
-            <div
-  style={{
-    marginTop: 24,
-  }}
->
-  <Link
-    href={`/superadmin/buildings/${building.id}/edit`}
-    style={{
-      display: 'inline-block',
-      padding: '12px 18px',
-      backgroundColor: '#111827',
-      color: '#ffffff',
-      borderRadius: 10,
-      textDecoration: 'none',
-      fontWeight: 600,
-    }}
-  >
-    Editar edificio
-  </Link>
-</div>
             <span
               style={{
                 color: building.active
                   ? '#047857'
                   : '#b91c1c',
+                fontWeight: 600,
               }}
             >
-              {building.active ? 'Activo' : 'Inactivo'}
+              {building.active
+                ? 'Activo'
+                : 'Inactivo'}
             </span>
           </p>
+
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 12,
+              marginTop: 24,
+            }}
+          >
+            <Link
+              href={`/superadmin/buildings/${building.id}/edit`}
+              style={{
+                display: 'inline-block',
+                padding: '12px 18px',
+                backgroundColor: '#111827',
+                color: '#ffffff',
+                borderRadius: 10,
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+            >
+              Editar edificio
+            </Link>
+
+            <Link
+              href={`/superadmin/buildings/${building.id}/members`}
+              style={{
+                display: 'inline-block',
+                padding: '12px 18px',
+                backgroundColor: '#ffffff',
+                color: '#111827',
+                borderRadius: 10,
+                border: '1px solid #d1d5db',
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+            >
+              Personas
+            </Link>
+          </div>
         </div>
 
         <div
@@ -154,7 +181,24 @@ export default async function BuildingDetailPage({
             gap: 20,
           }}
         >
-          <h2>Departamentos / Unidades</h2>
+          <div>
+            <h2
+              style={{
+                marginBottom: 4,
+              }}
+            >
+              Departamentos / Unidades
+            </h2>
+
+            <p
+              style={{
+                marginTop: 0,
+                color: '#6b7280',
+              }}
+            >
+              Administra las unidades asociadas a este edificio.
+            </p>
+          </div>
 
           <Link
             href={`/superadmin/buildings/${building.id}/units/new`}
@@ -165,6 +209,7 @@ export default async function BuildingDetailPage({
               borderRadius: 10,
               textDecoration: 'none',
               fontWeight: 600,
+              whiteSpace: 'nowrap',
             }}
           >
             + Crear unidad
@@ -181,32 +226,37 @@ export default async function BuildingDetailPage({
               borderRadius: 12,
             }}
           >
-            Error cargando unidades: {unitsError.message}
+            Error cargando unidades:{' '}
+            {unitsError.message}
           </div>
         )}
 
-        {!unitsError && units?.length === 0 && (
-          <div
-            style={{
-              marginTop: 20,
-              padding: 28,
-              backgroundColor: '#ffffff',
-              borderRadius: 14,
-              border: '1px solid #e5e7eb',
-            }}
-          >
-            <strong>No existen unidades todavía.</strong>
-
-            <p
+        {!unitsError &&
+          units?.length === 0 && (
+            <div
               style={{
-                marginBottom: 0,
-                color: '#6b7280',
+                marginTop: 20,
+                padding: 28,
+                backgroundColor: '#ffffff',
+                borderRadius: 14,
+                border: '1px solid #e5e7eb',
               }}
             >
-              Crea el primer departamento o unidad de este edificio.
-            </p>
-          </div>
-        )}
+              <strong>
+                No existen unidades todavía.
+              </strong>
+
+              <p
+                style={{
+                  marginBottom: 0,
+                  color: '#6b7280',
+                }}
+              >
+                Crea el primer departamento o unidad
+                de este edificio.
+              </p>
+            </div>
+          )}
 
         {units?.map((unit) => (
           <Link
@@ -242,11 +292,15 @@ export default async function BuildingDetailPage({
                 </strong>
 
                 <p>
-                  Piso: {unit.floor ?? 'Sin información'}
+                  Piso:{' '}
+                  {unit.floor ??
+                    'Sin información'}
                 </p>
 
                 <p>
-                  Prorrateo: {unit.proration ?? 'Sin definir'}
+                  Prorrateo:{' '}
+                  {unit.proration ??
+                    'Sin definir'}
                 </p>
 
                 <p
@@ -255,9 +309,12 @@ export default async function BuildingDetailPage({
                     color: unit.active
                       ? '#047857'
                       : '#b91c1c',
+                    fontWeight: 600,
                   }}
                 >
-                  {unit.active ? 'Activa' : 'Inactiva'}
+                  {unit.active
+                    ? 'Activa'
+                    : 'Inactiva'}
                 </p>
               </div>
 

@@ -155,7 +155,22 @@ export default async function UnitDetailPage({
                 fontWeight: 600,
               }}
             >
-              Editar unidad
+              Editar unidad <Link
+  href={`/superadmin/buildings/${building.id}/units/${unit.id}/members`}
+  style={{
+    display: 'inline-block',
+    marginLeft: 12,
+    padding: '12px 18px',
+    backgroundColor: '#ffffff',
+    color: '#111827',
+    border: '1px solid #d1d5db',
+    borderRadius: 10,
+    textDecoration: 'none',
+    fontWeight: 600,
+  }}
+>
+  Personas
+</Link>
             </Link>
           </div>
         </div>

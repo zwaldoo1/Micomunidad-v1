@@ -23,10 +23,17 @@ export default async function SuperadminPage() {
     redirect('/')
   }
 
-  const { data: buildings, error } = await supabase
+  const {
+    data: buildings,
+    error: buildingsError,
+  } = await supabase
     .from('buildings')
-    .select('id, name, address, active, created_at')
-    .order('created_at', { ascending: false })
+    .select(
+      'id, name, address, rut, active, created_at'
+    )
+    .order('created_at', {
+      ascending: false,
+    })
 
   return (
     <main
@@ -43,13 +50,36 @@ export default async function SuperadminPage() {
           margin: '0 auto',
         }}
       >
-        <h1>Panel Superadministrador</h1>
+        <div
+          style={{
+            marginBottom: 30,
+          }}
+        >
+          <h1
+            style={{
+              marginBottom: 6,
+            }}
+          >
+            Panel Superadministrador
+          </h1>
 
-        <p style={{ color: '#6b7280' }}>
-          MiComunidad
-        </p>
+          <p
+            style={{
+              margin: 0,
+              color: '#6b7280',
+            }}
+          >
+            MiComunidad
+          </p>
+        </div>
 
-        <hr style={{ margin: '30px 0' }} />
+        <hr
+          style={{
+            marginBottom: 30,
+            border: 0,
+            borderTop: '1px solid #d1d5db',
+          }}
+        />
 
         <div
           style={{
@@ -59,7 +89,24 @@ export default async function SuperadminPage() {
             gap: 20,
           }}
         >
-          <h2>Edificios</h2>
+          <div>
+            <h2
+              style={{
+                marginBottom: 4,
+              }}
+            >
+              Edificios
+            </h2>
+
+            <p
+              style={{
+                marginTop: 0,
+                color: '#6b7280',
+              }}
+            >
+              Administra las comunidades registradas en la plataforma.
+            </p>
+          </div>
 
           <Link
             href="/superadmin/buildings/new"
@@ -70,101 +117,142 @@ export default async function SuperadminPage() {
               borderRadius: 10,
               textDecoration: 'none',
               fontWeight: 600,
+              whiteSpace: 'nowrap',
             }}
           >
             + Crear edificio
           </Link>
         </div>
 
-        {error && (
-          <p style={{ color: '#b91c1c' }}>
-            Error cargando edificios: {error.message}
-          </p>
-        )}
-
-        {!error && buildings?.length === 0 && (
+        {buildingsError && (
           <div
             style={{
               marginTop: 20,
-              backgroundColor: '#ffffff',
-              padding: 30,
-              borderRadius: 14,
+              padding: 16,
+              backgroundColor: '#fee2e2',
+              color: '#991b1b',
+              borderRadius: 10,
             }}
           >
-            <h3>No existen edificios todavía</h3>
-
-            <p>
-              Tu plataforma está preparada para crear el primer edificio.
-            </p>
+            Error cargando edificios:{' '}
+            {buildingsError.message}
           </div>
         )}
 
-        {buildings?.map((building) => (
-          <Link
-            key={building.id}
-            href={`/superadmin/buildings/${building.id}`}
-            style={{
-              display: 'block',
-              marginTop: 15,
-              backgroundColor: '#ffffff',
-              padding: 22,
-              borderRadius: 14,
-              color: '#111827',
-              textDecoration: 'none',
-              cursor: 'pointer',
-              border: '1px solid #e5e7eb',
-            }}
-          >
+        {!buildingsError &&
+          buildings?.length === 0 && (
             <div
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                gap: 20,
+                marginTop: 24,
+                backgroundColor: '#ffffff',
+                padding: 30,
+                borderRadius: 14,
+                border: '1px solid #e5e7eb',
               }}
             >
-              <div>
-                <strong
-                  style={{
-                    fontSize: 18,
-                    display: 'block',
-                  }}
-                >
-                  {building.name}
-                </strong>
-
-                <p
-                  style={{
-                    marginTop: 6,
-                    marginBottom: 6,
-                  }}
-                >
-                  {building.address ?? 'Sin dirección'}
-                </p>
-
-                <span
-                  style={{
-                    fontSize: 14,
-                    color: building.active
-                      ? '#047857'
-                      : '#b91c1c',
-                  }}
-                >
-                  {building.active ? 'Activo' : 'Inactivo'}
-                </span>
-              </div>
-
-              <span
+              <h3
                 style={{
-                  fontSize: 24,
+                  marginTop: 0,
+                }}
+              >
+                No existen edificios todavía
+              </h3>
+
+              <p
+                style={{
+                  marginBottom: 0,
                   color: '#6b7280',
                 }}
               >
-                →
-              </span>
+                Tu plataforma está preparada para crear el primer edificio.
+              </p>
             </div>
-          </Link>
-        ))}
+          )}
+
+        {!buildingsError &&
+          buildings?.map((building) => (
+            <Link
+              key={building.id}
+              href={`/superadmin/buildings/${building.id}`}
+              style={{
+                display: 'block',
+                marginTop: 15,
+                backgroundColor: '#ffffff',
+                padding: 22,
+                borderRadius: 14,
+                color: '#111827',
+                textDecoration: 'none',
+                cursor: 'pointer',
+                border: '1px solid #e5e7eb',
+              }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: 20,
+                }}
+              >
+                <div>
+                  <strong
+                    style={{
+                      fontSize: 18,
+                      display: 'block',
+                    }}
+                  >
+                    {building.name}
+                  </strong>
+
+                  <p
+                    style={{
+                      marginTop: 6,
+                      marginBottom: 6,
+                    }}
+                  >
+                    {building.address ??
+                      'Sin dirección'}
+                  </p>
+
+                  {building.rut && (
+                    <p
+                      style={{
+                        marginTop: 0,
+                        marginBottom: 8,
+                        color: '#6b7280',
+                        fontSize: 14,
+                      }}
+                    >
+                      RUT: {building.rut}
+                    </p>
+                  )}
+
+                  <span
+                    style={{
+                      fontSize: 14,
+                      fontWeight: 600,
+                      color: building.active
+                        ? '#047857'
+                        : '#b91c1c',
+                    }}
+                  >
+                    {building.active
+                      ? 'Activo'
+                      : 'Inactivo'}
+                  </span>
+                </div>
+
+                <span
+                  style={{
+                    fontSize: 24,
+                    color: '#6b7280',
+                  }}
+                >
+                  →
+                </span>
+              </div>
+            </Link>
+          ))}
       </div>
     </main>
   )
