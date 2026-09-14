@@ -189,43 +189,68 @@ export default async function BuildingDetailPage({
         )}
 
         {units?.map((unit) => (
-          <div
+          <Link
             key={unit.id}
+            href={`/superadmin/buildings/${building.id}/units/${unit.id}`}
             style={{
+              display: 'block',
               marginTop: 14,
               padding: 20,
               backgroundColor: '#ffffff',
               borderRadius: 12,
               border: '1px solid #e5e7eb',
+              textDecoration: 'none',
+              color: '#111827',
+              cursor: 'pointer',
             }}
           >
-            <strong
+            <div
               style={{
-                fontSize: 18,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                gap: 20,
               }}
             >
-              Unidad {unit.unit_number}
-            </strong>
+              <div>
+                <strong
+                  style={{
+                    fontSize: 18,
+                  }}
+                >
+                  Unidad {unit.unit_number}
+                </strong>
 
-            <p>
-              Piso: {unit.floor ?? 'Sin información'}
-            </p>
+                <p>
+                  Piso: {unit.floor ?? 'Sin información'}
+                </p>
 
-            <p>
-              Prorrateo: {unit.proration ?? 'Sin definir'}
-            </p>
+                <p>
+                  Prorrateo: {unit.proration ?? 'Sin definir'}
+                </p>
 
-            <p
-              style={{
-                marginBottom: 0,
-                color: unit.active
-                  ? '#047857'
-                  : '#b91c1c',
-              }}
-            >
-              {unit.active ? 'Activa' : 'Inactiva'}
-            </p>
-          </div>
+                <p
+                  style={{
+                    marginBottom: 0,
+                    color: unit.active
+                      ? '#047857'
+                      : '#b91c1c',
+                  }}
+                >
+                  {unit.active ? 'Activa' : 'Inactiva'}
+                </p>
+              </div>
+
+              <span
+                style={{
+                  fontSize: 24,
+                  color: '#6b7280',
+                }}
+              >
+                →
+              </span>
+            </div>
+          </Link>
         ))}
       </div>
     </main>
