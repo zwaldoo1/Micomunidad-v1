@@ -71,6 +71,37 @@ export default async function SuperadminPage() {
           >
             MiComunidad
           </p>
+
+          <div
+            style={{
+              marginTop: 14,
+              display: 'flex',
+              gap: 16,
+              flexWrap: 'wrap',
+            }}
+          >
+            <Link
+              href="/superadmin/profile"
+              style={{
+                color: '#374151',
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+            >
+              Mi perfil
+            </Link>
+
+            <Link
+              href="/superadmin/users/invite"
+              style={{
+                color: '#374151',
+                textDecoration: 'none',
+                fontWeight: 600,
+              }}
+            >
+              Invitar persona
+            </Link>
+          </div>
         </div>
 
         <hr
